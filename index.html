@@ -1,0 +1,263 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyNest – Study Space Booking</title>
+<link rel="stylesheet" href="style_login.css">
+</head>
+<body>
+
+<!-- ================= LOGIN VIEW ================= -->
+<div id="loginView">
+<div class="page">
+
+  <!-- ========== LEFT: branding panel ========== -->
+  <aside class="brand-panel">
+    <div class="brand-top">
+      <span class="brand-chip">	🪺 StudyNest Study Spaces</span>
+    </div>
+
+    <div class="brand-center">
+      <h1 class="brand-title">	Find your <span>focus</span></h1>
+      <p class="brand-sub">Quiet corners, group tables and computer desks – claim your space before you even leave your room.</p>
+
+      <div class="badge-ring">
+        <div class="badge-number">	4.9<sup>★</sup></div>
+        <div class="badge-text">	Student<br>Favourite</div>
+      </div>
+    </div>
+
+    <div class="brand-cards">
+      <div class="mini-card"><strong>48</strong><span>Seats</span></div>
+      <div class="mini-card"><strong>4</strong><span>Categories</span></div>
+      <div class="mini-card"><strong>8–20</strong><span>Open hours</span></div>
+    </div>
+  </aside>
+
+  <!-- ========== RIGHT: login panel ========== -->
+  <main class="login-panel">
+    <div class="logo-row">
+      <div class="logo-mark">S</div>
+      <div class="logo-text">
+        <span class="logo-big">NEST</span>
+        <span class="logo-small">
+          <span class="spaced">	S T U D Y</span>
+          <span class="light">	SPACE BOOKING</span>
+        </span>
+      </div>
+    </div>
+
+    <form class="login-card" id="loginForm" novalidate>
+      <div class="top-row">
+        <h2>Log in</h2>
+        <div class="select-wrap">
+          <select id="role" aria-label="Login as">
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+            <option value="HeadOffice">HeadOffice</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group" id="g-user">
+        <input type="text" id="userId_login" inputmode="numeric" placeholder="User ID" autocomplete="off">
+        <span class="icon" aria-hidden="true">👤</span>
+      </div>
+      <p class="error" id="e-user"></p>
+
+      <div class="input-group" id="g-pass">
+        <input type="password" id="password" placeholder="Password" autocomplete="off">
+        <button type="button" class="icon eye" id="togglePass" aria-label="Show or hide password">👁</button>
+      </div>
+      <p class="error" id="e-pass"></p>
+
+      <!-- Fake human check (demo only) -->
+      <div class="human-check" id="humanCheck">
+        <div class="spinner" id="spinner"></div>
+        <span id="humanText">Verifying...</span>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">Login</button>
+      <a href="#" class="forgot" id="forgot">Forgot your password?</a>
+    </form>
+
+    <p class="demo-note">Demo only – no real account needed. Any number works as User ID and any characters as password.</p>
+  </main>
+
+</div>
+</div>
+
+<!-- ================= PORTAL VIEW ================= -->
+<div id="portalView" hidden>
+
+<!-- ================= NAVIGATION ================= -->
+<header>
+  <nav aria-label="Main navigation">
+    <a href="#home" class="logo">Study<span>Nest</span>a>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#categories">Seat Categories</a></li>
+      <li><a href="#book">Book a Seat</a></li>
+      <li><a href="#how">How It Works</a></li>
+    </ul>
+    <div class="user-box">
+      <span class="user-id" id="userBadge"></span>
+      <button type="button" class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div>
+        <h1>Find your seat. Focus on your future.</h1>
+        <p>Reserve a quiet corner, a group table or a computer in seconds. No queues and no wandering between floors.</p>
+        <div class="hero-buttons">
+          <a href="#book" class="btn btn-primary">Book Your Seat</a>
+          <a href="#categories" class="btn btn-outline">Explore Categories</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Live availability">
+        <h3>Open seats right now</h3>
+        <div id="heroList"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= STATISTICS ================= -->
+  <section class="stats" aria-label="Library statistics">
+    <div class="container stats-grid">
+      <div><div class="stat-number" id="statAvailable">0</div><div class="stat-label">Seats available</div></div>
+      <div><div class="stat-number" id="statBooked">0</div><div class="stat-label">Seats booked</div></div>
+      <div><div class="stat-number" id="statCategories">4</div><div class="stat-label">Seat categories</div></div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section id="categories">
+    <div class="container">
+      <h2>Seat Categories</h2>
+      <p class="subtitle">Pick the kind of space that fits your work today.</p>
+      <div class="cards" id="cardContainer"></div>
+    </div>
+  </section>
+
+  <!-- ================= BOOKING ================= -->
+  <section class="booking" id="book">
+    <div class="container">
+      <h2>Book a Seat</h2>
+      <p class="subtitle">Choose a category, tap a green seat, then fill in your details.</p>
+
+      <div class="booking-grid">
+        <!-- Seat map -->
+        <div class="panel">
+          <h3 id="mapTitle">Seat map</h3>
+          <div class="legend">
+            <span class="l-available">Available</span>
+            <span class="l-selected">Selected</span>
+            <span class="l-booked">Booked</span>
+          </div>
+          <p class="available-count" id="availableCount"></p>
+          <div class="seat-grid" id="seatGrid"></div>
+        </div>
+
+        <!-- Booking form -->
+        <div class="panel">
+          <h3>Your details</h3>
+          <form id="bookingForm" novalidate>
+            <div class="field" id="f-name">
+              <label for="fullName">Full name</label>
+              <input type="text" id="fullName" placeholder="e.g. Aarav Sharma">
+              <span class="error"></span>
+            </div>
+            <div class="field" id="f-id">
+              <label for="userId">Student or staff ID</label>
+              <input type="text" id="userId" placeholder="e.g. STU2024015">
+              <span class="error"></span>
+            </div>
+            <div class="field" id="f-category">
+              <label for="category">Seat category</label>
+              <select id="category"></select>
+              <span class="error"></span>
+            </div>
+            <div class="row">
+              <div class="field" id="f-date">
+                <label for="bookingDate">Booking date</label>
+                <input type="date" id="bookingDate">
+                <span class="error"></span>
+              </div>
+              <div class="field" id="f-time">
+                <label for="startTime">Start time</label>
+                <input type="time" id="startTime" min="08:00" max="20:00">
+                <span class="error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field" id="f-duration">
+                <label for="duration">Duration</label>
+                <select id="duration">
+                  <option value="">Choose…</option>
+                  <option value="1">1 hour</option>
+                  <option value="2">2 hours</option>
+                  <option value="3">3 hours</option>
+                  <option value="4">4 hours</option>
+                </select>
+                <span class="error"></span>
+              </div>
+              <div class="field" id="f-seat">
+                <label for="seatField">Selected seat</label>
+                <input type="text" id="seatField" readonly placeholder="Tap a seat on the map">
+                <span class="error"></span>
+              </div>
+            </div>
+
+            <!-- Live summary -->
+            <div class="summary" aria-live="polite">
+              <h4>Booking summary</h4>
+              <p><span>Seat</span><span id="sumSeat">–</span></p>
+              <p><span>Category</span><span id="sumCategory">–</span></p>
+              <p><span>Date</span><span id="sumDate">–</span></p>
+              <p><span>Time</span><span id="sumTime">–</span></p>
+              <p><span>Duration</span><span id="sumDuration">–</span></p>
+            </div>
+
+            <div class="form-buttons">
+              <button type="submit" class="btn btn-dark">Confirm Booking</button>
+              <button type="button" class="btn btn-light" id="clearBtn">Clear Selection</button>
+            </div>
+          </form>
+          <div class="success" id="successBox" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section id="how">
+    <div class="container">
+      <h2>How It Works</h2>
+      <p class="subtitle">Three quick steps from login to library desk.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h3>Choose a category</h3><p>Select silent study, group discussion, computer lab or the teachers' section.</p></div>
+        <div class="step"><div class="step-num">2</div><h3>Select a seat</h3><p>Tap any green seat on the map. Orange seats are already taken.</p></div>
+        <div class="step"><div class="step-num">3</div><h3>Confirm the booking</h3><p>Enter your details, check the summary and press Confirm Booking.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p><strong>StudyNest</strong> – Study Space Booking</p>
+  <p>College mini project · Front-end demonstration built with HTML, CSS and JavaScript.</p>
+  <p>Bookings are stored only while this page stays open.</p>
+</footer>
+
+</div>
+
+<script src="script_login.js"></script>
+</body>
+</html>
